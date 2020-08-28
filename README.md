@@ -6,5 +6,5 @@ Pre requisito.
   - Eclipse sts Spring Tool Suite 4 
   - lombok instalado
   - Keycloak instalado e em execução versão do keycloack utilizada neste tutorial é o 11.0.1 [Parte 1](https://github.com/EduardoNofre/keycloack-gerar-token)
-  - S.O Windows 
-  
+  - S.O Windows 10
+  - É necessario ter uma simples aplicação <h6>Rest</h6> com um endpoint com verbo get que retorne algo o foco aqui é o keycloack com spring.
