@@ -2,7 +2,7 @@
 ## Configuração - Tomcat porta e log
 ##-----------------------------------------------------------
 server:
-  port: 7085
+  port: 8081
   tomcat:
     accesslog:
       enabled: true
@@ -19,11 +19,11 @@ keycloak:
   realm: finance-app-realm
   auth-server-url: http://localhost:8080/auth
   ssl-required: external
-  resource: finance-app-clients-id
+  resource: finance-app-client-id
   public-client: true  
   bearer-only: true
   security-constraints[0]:
-    authRoles[0]: finance-app-users-admin
+    authRoles[0]: finance-app-user-admin
     securityCollections[0]:
       patterns[0]: /finance-app/keycloack/sem-keycloack/*
 

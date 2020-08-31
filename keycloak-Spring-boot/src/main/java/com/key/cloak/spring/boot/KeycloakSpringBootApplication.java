@@ -9,5 +9,4 @@ public class KeycloakSpringBootApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(KeycloakSpringBootApplication.class, args);
 	}
-
 }
