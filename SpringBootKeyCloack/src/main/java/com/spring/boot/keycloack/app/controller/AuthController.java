@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.boot.keycloack.app.model.User;
+import com.spring.boot.keycloack.app.model.Usuario;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,7 +30,7 @@ public class AuthController {
 
 	@Operation(summary = "login ", description = "login de usuario")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
+			@Content(mediaType = "application/json", schema = @Schema(implementation = Usuario.class)) }),
 			@ApiResponse(responseCode = "200", description = "sucesso", content = @Content),
 			@ApiResponse(responseCode = "204", description = "Sem conteudo", content = @Content),
 			@ApiResponse(responseCode = "400", description = "Erro processar a requisição", content = @Content),
@@ -39,7 +39,7 @@ public class AuthController {
 			@ApiResponse(responseCode = "500", description = "Interno sem causa mapeada.", content = @Content),
 			@ApiResponse(responseCode = "504", description = "Gateway Time-Out", content = @Content) })
 	@PostMapping("/login")
-	public ResponseEntity<User> loginSpringBoot(@Valid @RequestBody User user) {
+	public ResponseEntity<Usuario> loginSpringBoot(@Valid @RequestBody Usuario user) {
 
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 
