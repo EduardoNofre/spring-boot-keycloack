@@ -37,7 +37,8 @@ public class SecurityConfig {
 	            "/swagger-ui-bundle.js", 
 	            "/favicon.ico",
 	            "/health-check",
-	            "*/login/**" 
+	            "*/login/**",
+	            "*/refresh-token/**"
 	        }; 
 	    }
 }

@@ -37,7 +37,7 @@ public class HttpParamsUtil {
 	}
 
 	public HttpParamsUtil HttpParamsTokenRefresh(String tokenRefresh) {
-		params.add("tokenRefresh", tokenRefresh);
+		params.add("refresh_token", tokenRefresh);
 		return this;
 	}
 
