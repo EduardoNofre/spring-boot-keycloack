@@ -1,5 +1,6 @@
 package com.spring.boot.keycloack.app.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.boot.keycloack.app.model.Usuario;
+import com.spring.boot.keycloack.app.service.ServiceLogin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,6 +29,10 @@ import lombok.Getter;
 @Order
 @Tag(name = "Recurso AuthController", description = "Auth Controller controle de usuarios")
 public class AuthController {
+	
+	
+	@Autowired
+	private ServiceLogin serviceLogin;
 
 	@Operation(summary = "login ", description = "login de usuario")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso", content = {
@@ -39,9 +45,9 @@ public class AuthController {
 			@ApiResponse(responseCode = "500", description = "Interno sem causa mapeada.", content = @Content),
 			@ApiResponse(responseCode = "504", description = "Gateway Time-Out", content = @Content) })
 	@PostMapping("/login")
-	public ResponseEntity<Usuario> loginSpringBoot(@Valid @RequestBody Usuario user) {
+	public ResponseEntity<?> loginSpringBoot(@Valid @RequestBody Usuario usuario) {
 
-		return ResponseEntity.status(HttpStatus.OK).body(user);
+		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.loginService(usuario));
 
 	}
 }
