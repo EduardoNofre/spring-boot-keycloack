@@ -5,15 +5,21 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.google.gson.Gson;
 import com.spring.boot.keycloack.app.config.HttpComponent;
-import com.spring.boot.keycloack.app.model.Usuario;
+import com.spring.boot.keycloack.app.dto.BodyDTO;
+import com.spring.boot.keycloack.app.dto.RefreshTokenDTO;
+import com.spring.boot.keycloack.app.dto.UsuarioDTO;
 import com.spring.boot.keycloack.app.utils.HttpParamsUtil;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +46,7 @@ public class ServiceLogin {
 	@Autowired
 	private HttpComponent httpComponent;
 
-	public ResponseEntity<String> loginService(Usuario usuario) {
+	public BodyDTO loginService(UsuarioDTO usuarioDTO) {
 
 		log.info("Login service inicio {}", LocalDateTime.now());		
 		
@@ -50,20 +56,24 @@ public class ServiceLogin {
 				.HttpParamsClientId(clientId)
 				.HttpParamsClientSecret(clientSecret)
 				.HttpParamsGrantType(grantType)
-				.HttpParamsUsername(usuario.getUsuario())
-				.HttpParamsPassword(usuario.getSenha()).build();
+				.HttpParamsUsername(usuarioDTO.getUsuario())
+				.HttpParamsPassword(usuarioDTO.getSenha()).build();
 
 		HttpEntity<MultiValueMap<String, String>> rquest = new HttpEntity<>(params, httpComponent.httpHeaders());
 
 		try {
 			ResponseEntity<String> response = httpComponent.restTemplate().postForEntity(keycloackServerUrl + "/protocol/openid-connect/token/", rquest, String.class);
-			return ResponseEntity.ok(response.getBody());
+			
+			BodyDTO responseObj = new Gson().fromJson(response.getBody(), BodyDTO.class);
+						
+			return responseObj;
 		} catch (HttpClientErrorException e) {
-			return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
+			throw new HttpClientErrorException(HttpStatusCode.valueOf(401));
 		}
 	}
 	
-	public ResponseEntity<String> refreshTokenService(String token) {
+	public RefreshTokenDTO refreshTokenService(
+			@Parameter(name = "token", description = "token hash", example = "hbGciOiJIUzI1NiIsInR5cCIgOiAiS...") @RequestParam(name = "token", required = true )String token ){
 		
 		log.info("Refresh Token service {}", LocalDateTime.now());		
 		
@@ -80,10 +90,13 @@ public class ServiceLogin {
 		try {
 			
 			ResponseEntity<String> response = httpComponent.restTemplate().postForEntity(keycloackServerUrl + "/protocol/openid-connect/token/", rquest, String.class);
-			return ResponseEntity.ok(response.getBody());
+			
+			RefreshTokenDTO responseObj = new Gson().fromJson(response.getBody(), RefreshTokenDTO.class);
+			
+			return responseObj;
 			
 		} catch (HttpClientErrorException e) {
-			return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
+			throw new HttpClientErrorException(HttpStatusCode.valueOf(401));
 		}
 		
 	}

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.boot.keycloack.app.model.Usuario;
+import com.spring.boot.keycloack.app.dto.BodyDTO;
+import com.spring.boot.keycloack.app.dto.RefreshTokenDTO;
+import com.spring.boot.keycloack.app.dto.UsuarioDTO;
 import com.spring.boot.keycloack.app.service.ServiceLogin;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,9 +36,9 @@ public class AuthController {
 	@Autowired
 	private ServiceLogin serviceLogin;
 
-	@Operation(summary = "login ", description = "login de usuario")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = Usuario.class)) }),
+	@Operation(summary = "login ", description = "Login de usuario Spring Boo keycloack")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Sucesso", content = {	@Content(mediaType = "application/json", schema = @Schema(implementation = BodyDTO.class)) }),
 			@ApiResponse(responseCode = "200", description = "sucesso", content = @Content),
 			@ApiResponse(responseCode = "204", description = "Sem conteudo", content = @Content),
 			@ApiResponse(responseCode = "400", description = "Erro processar a requisição", content = @Content),
@@ -45,16 +47,16 @@ public class AuthController {
 			@ApiResponse(responseCode = "500", description = "Interno sem causa mapeada.", content = @Content),
 			@ApiResponse(responseCode = "504", description = "Gateway Time-Out", content = @Content) })
 	@PostMapping("/login")
-	public ResponseEntity<?> loginSpringBoot(@Valid @RequestBody Usuario usuario) {
+	public ResponseEntity<BodyDTO> loginSpringBoot(@Valid @RequestBody UsuarioDTO usuarioDTO) {
 
-		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.loginService(usuario));
+		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.loginService(usuarioDTO));
 
 	}
 	
 	
-	@Operation(summary = "login ", description = "login de usuario")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Sucesso", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = Usuario.class)) }),
+	@Operation(summary = "Refresh Token ", description = "Refresh Token Spring Boot keycloack")
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Sucesso", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = RefreshTokenDTO.class)) }),
 			@ApiResponse(responseCode = "200", description = "sucesso", content = @Content),
 			@ApiResponse(responseCode = "204", description = "Sem conteudo", content = @Content),
 			@ApiResponse(responseCode = "400", description = "Erro processar a requisição", content = @Content),
@@ -63,7 +65,7 @@ public class AuthController {
 			@ApiResponse(responseCode = "500", description = "Interno sem causa mapeada.", content = @Content),
 			@ApiResponse(responseCode = "504", description = "Gateway Time-Out", content = @Content) })
 	@PostMapping("/refresh-token")
-	public ResponseEntity<?> refreshTokenSpringBoot(String refreshToken) {
+	public ResponseEntity<RefreshTokenDTO> refreshTokenSpringBoot(String refreshToken) {
 
 		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.refreshTokenService(refreshToken));
 
