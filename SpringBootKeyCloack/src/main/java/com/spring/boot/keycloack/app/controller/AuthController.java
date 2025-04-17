@@ -3,6 +3,7 @@ package com.spring.boot.keycloack.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class AuthController {
 			@ApiResponse(responseCode = "500", description = "Interno sem causa mapeada.", content = @Content),
 			@ApiResponse(responseCode = "504", description = "Gateway Time-Out", content = @Content) })
 	@PostMapping("/login")
-	public ResponseEntity<BodyDTO> loginSpringBoot(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+	public ResponseEntity<BodyDTO> loginSpringBoot(@Valid @RequestBody UsuarioDTO usuarioDTO) throws AccessDeniedException{
 
 		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.loginService(usuarioDTO));
 
@@ -55,7 +56,7 @@ public class AuthController {
 			@ApiResponse(responseCode = "500", description = "Interno sem causa mapeada.", content = @Content),
 			@ApiResponse(responseCode = "504", description = "Gateway Time-Out", content = @Content) })
 	@PostMapping("/refresh-token")
-	public ResponseEntity<RefreshTokenDTO> refreshTokenSpringBoot(String refreshToken) {
+	public ResponseEntity<RefreshTokenDTO> refreshTokenSpringBoot(String refreshToken) throws AccessDeniedException{
 
 		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.refreshTokenService(refreshToken));
 

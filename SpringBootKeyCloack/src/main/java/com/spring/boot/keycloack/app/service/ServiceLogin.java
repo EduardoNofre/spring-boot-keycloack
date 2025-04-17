@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
@@ -46,7 +47,7 @@ public class ServiceLogin {
 	@Autowired
 	private HttpComponent httpComponent;
 
-	public BodyDTO loginService(UsuarioDTO usuarioDTO) {
+	public BodyDTO loginService(UsuarioDTO usuarioDTO)  throws AccessDeniedException{
 
 		log.info("Login service inicio {}", LocalDateTime.now());		
 		
@@ -67,13 +68,13 @@ public class ServiceLogin {
 			BodyDTO responseObj = new Gson().fromJson(response.getBody(), BodyDTO.class);
 						
 			return responseObj;
-		} catch (HttpClientErrorException e) {
-			throw new HttpClientErrorException(HttpStatusCode.valueOf(401));
+		} catch (Exception e) {
+			throw new AccessDeniedException("Autênticação falhou - verificar as configurações do sistema de segurança");
 		}
 	}
 	
 	public RefreshTokenDTO refreshTokenService(
-			@Parameter(name = "token", description = "token hash", example = "hbGciOiJIUzI1NiIsInR5cCIgOiAiS...") @RequestParam(name = "token", required = true )String token ){
+			@Parameter(name = "token", description = "token hash", example = "hbGciOiJIUzI1NiIsInR5cCIgOiAiS...") @RequestParam(name = "token", required = true )String token )  throws AccessDeniedException{
 		
 		log.info("Refresh Token service {}", LocalDateTime.now());		
 		
@@ -95,8 +96,8 @@ public class ServiceLogin {
 			
 			return responseObj;
 			
-		} catch (HttpClientErrorException e) {
-			throw new HttpClientErrorException(HttpStatusCode.valueOf(401));
+		} catch (Exception e) {
+			throw new AccessDeniedException("Autênticação falhou - Token não esta ativo");
 		}
 		
 	}
