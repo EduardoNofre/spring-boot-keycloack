@@ -25,8 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-@ControllerAdvice
 @Hidden
+@ControllerAdvice
 public class KeyCloackApiHandler extends ResponseEntityExceptionHandler implements Serializable{
 
 	private static final long serialVersionUID = 4790038517549729374L;
