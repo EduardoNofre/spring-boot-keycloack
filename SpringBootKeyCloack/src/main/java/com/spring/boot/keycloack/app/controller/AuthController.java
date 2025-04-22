@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.boot.keycloack.app.config.SecurityUserDetails;
 import com.spring.boot.keycloack.app.dto.RefreshTokenDTO;
 import com.spring.boot.keycloack.app.dto.UsuarioDTO;
-import com.spring.boot.keycloack.app.service.ServiceLogin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,7 +31,7 @@ public class AuthController {
 	
 	
 	@Autowired
-	private ServiceLogin serviceLogin;
+	private SecurityUserDetails  securityUserDetails ;
 
 	@Operation(summary = "login ", description = "Login de usuario Spring Boo keycloack")
 	@ApiResponses(value = { 
@@ -41,9 +41,9 @@ public class AuthController {
 			@ApiResponse(responseCode = "500", description = "Interno sem causa mapeada.", content = @Content),
 			@ApiResponse(responseCode = "504", description = "Gateway Time-Out", content = @Content) })
 	@PostMapping("/login")
-	public ResponseEntity<UsuarioDTO> loginSpringBoot(@Valid @RequestBody UsuarioDTO usuarioDTO) throws AccessDeniedException{
+	public ResponseEntity<UserDetailsService> loginSpringBoot(@Valid @RequestBody UsuarioDTO usuarioDTO) throws AccessDeniedException{
 
-		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.loginService(usuarioDTO));
+		return ResponseEntity.status(HttpStatus.OK).body(securityUserDetails.loginService(usuarioDTO));
 
 	}
 	
@@ -58,7 +58,7 @@ public class AuthController {
 	@PostMapping("/refresh-token")
 	public ResponseEntity<RefreshTokenDTO> refreshTokenSpringBoot(String refreshToken) throws AccessDeniedException{
 
-		return ResponseEntity.status(HttpStatus.OK).body(serviceLogin.refreshTokenService(refreshToken));
+		return ResponseEntity.status(HttpStatus.OK).body(securityUserDetails.refreshTokenService(refreshToken));
 
 	}
 }

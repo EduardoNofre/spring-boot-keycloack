@@ -1,6 +1,7 @@
-package com.spring.boot.keycloack.app.service;
+package com.spring.boot.keycloack.app.config;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,22 +12,21 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.userdetails.User;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
-import com.spring.boot.keycloack.app.config.HttpComponent;
 import com.spring.boot.keycloack.app.dto.RefreshTokenDTO;
 import com.spring.boot.keycloack.app.dto.UsuarioDTO;
 import com.spring.boot.keycloack.app.utils.HttpParamsUtil;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @org.springframework.stereotype.Service
-public class ServiceLogin {
+public class SecurityUserDetails  {
 
 	@Value("${keycloack.resource}")
 	private String clientId = "";
@@ -54,7 +54,7 @@ public class ServiceLogin {
 	@Autowired
 	private HttpComponent httpComponent;
 
-	public UsuarioDTO  loginService(UsuarioDTO usuarioDTO)  throws AccessDeniedException{
+	public UserDetailsService  loginService(UsuarioDTO usuarioDTO)  throws AccessDeniedException{
 
 		log.info("Login service inicio {}", LocalDateTime.now());		
 
@@ -96,31 +96,32 @@ public class ServiceLogin {
 
 				//valida acessos
 				Map<String, Object> recursos = decodedJWT.getClaim("resource_access").asMap();
-				if (recursos == null || !recursos.containsKey(clientId)) {
+				if (recursos == null || !recursos.containsKey("CLIENT_SPRING_BOOT")) {
 					throw new AccessDeniedException("Usuário sem acesso");
 				}
-//
-//
-//				//valida role
-//				Map<String, Object> acessos = (Map)recursos.get(clientId);
-//				List<String> roles = (List<String>) acessos.get("roles");
-//				String autorizacao = null;
-//				for (String role : roles) {
-//					if (role.toLowerCase().equals("admin")) {
-//						autorizacao = "admin";
-//						break;
-//					}
-//				}
-//				if (autorizacao==null) {
-//					throw new AccessDeniedException("Usuário sem acesso");
-//				}
+
+
+				//valida role
+				Map<String, Object> acessos = (Map)recursos.get(clientId);
+				List<String> roles = (List<String>) acessos.get("roles");
+				String autorizacao = null;
+				for (String role : roles) {
+					if (role.equalsIgnoreCase("CLIENT_ROLE_ADMIN")) {
+						autorizacao = "CLIENT_ROLE_ADMIN";
+						break;
+					}
+				}
+				if (autorizacao==null) {
+					throw new AccessDeniedException("Usuário sem acesso");
+				}
 
 				
-//				UserDetailsService user = new InMemoryUserDetailsManager(User.withUsername(usuarioDTO.getUsuario())
-//						.password(passwordEncoder().encode(usuarioDTO.getSenha()))
-//						.roles("admin").build());
+				UserDetailsService user = new InMemoryUserDetailsManager(User.withUsername(usuarioDTO.getUsuario())
+						.password(passwordEncoder().encode(usuarioDTO.getSenha()))
+						.roles(autorizacao).build());
 				
-				return usuarioDTO;
+				
+				return user;
 			}		
 
 		} catch (Exception e) {
