@@ -1,12 +1,4 @@
-package com.spring.boot.keycloack.app.config;
-
-import java.util.Collections;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.info.BuildProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.spring.boot.keycloak.app.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.Components;
@@ -18,17 +10,25 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 @Slf4j
 @Configuration
 @OpenAPIDefinition
 public class OpenApiConfig {
 
 	
-//	@Autowired
-//    BuildProperties buildProperties;
+	@Autowired
+	BuildProperties buildProperties;
 
     @Value("${server.servlet.context-path}")
-    String path;
+    private String path;
 
     static final String SECURITY_SCHEME_NAME = "Basic";
 
@@ -55,14 +55,14 @@ public class OpenApiConfig {
                                                 .type(SecurityScheme.Type.HTTP)
                                                 .scheme("basic")
                                 )
+                )
+                .info(new Info()
+                        .title(buildProperties.getName())
+                        .version(buildProperties.getVersion())
+                        .description(buildProperties.getGroup())
+                        .license(getLicense())
+
                 );
-//                .info(new Info()
-//                        .title(buildProperties.getName())
-//                        .version(buildProperties.getVersion())
-//                        .description(buildProperties.getGroup())
-//                        .license(getLicense())
-//
-//                );
     }
 
 

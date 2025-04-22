@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.controller;
+package com.spring.boot.keycloak.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.boot.keycloack.app.config.SecurityUserDetails;
-import com.spring.boot.keycloack.app.dto.RefreshTokenDTO;
-import com.spring.boot.keycloack.app.dto.UsuarioDTO;
+import com.spring.boot.keycloak.app.config.SecurityUserDetails;
+import com.spring.boot.keycloak.app.dto.RefreshTokenDTO;
+import com.spring.boot.keycloak.app.dto.UsuarioDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

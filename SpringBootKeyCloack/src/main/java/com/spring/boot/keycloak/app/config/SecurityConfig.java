@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.config;
+package com.spring.boot.keycloak.app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-import com.spring.boot.keycloack.app.handle.SecurityHandler;
+import com.spring.boot.keycloak.app.handle.SecurityHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 public class SecurityConfig {
 	
-	@Value("${keycloack.auth-server-url}")
+	@Value("${keycloak.auth-server-url}")
 	private String urlKeycloak;
 	
 	@Autowired

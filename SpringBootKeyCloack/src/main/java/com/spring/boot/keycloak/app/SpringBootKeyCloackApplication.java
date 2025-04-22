@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app;
+package com.spring.boot.keycloak.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

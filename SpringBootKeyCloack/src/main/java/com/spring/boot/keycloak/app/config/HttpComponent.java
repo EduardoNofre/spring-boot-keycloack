@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.config;
+package com.spring.boot.keycloak.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;

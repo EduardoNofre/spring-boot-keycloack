@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.model;
+package com.spring.boot.keycloak.app.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

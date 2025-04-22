@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.dto;
+package com.spring.boot.keycloak.app.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

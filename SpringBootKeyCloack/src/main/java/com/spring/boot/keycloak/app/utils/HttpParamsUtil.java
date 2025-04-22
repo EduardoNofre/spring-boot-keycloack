@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.utils;
+package com.spring.boot.keycloak.app.utils;
 
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;

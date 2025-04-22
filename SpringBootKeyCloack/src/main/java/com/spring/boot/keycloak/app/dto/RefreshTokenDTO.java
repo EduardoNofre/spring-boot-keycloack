@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.dto;
+package com.spring.boot.keycloak.app.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

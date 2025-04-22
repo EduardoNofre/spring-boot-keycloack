@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.config;
+package com.spring.boot.keycloak.app.config;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,8 +24,8 @@ import org.springframework.web.client.RestTemplate;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
-import com.spring.boot.keycloack.app.dto.RefreshTokenDTO;
-import com.spring.boot.keycloack.app.utils.HttpParamsUtil;
+import com.spring.boot.keycloak.app.dto.RefreshTokenDTO;
+import com.spring.boot.keycloak.app.utils.HttpParamsUtil;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
@@ -35,19 +35,19 @@ import lombok.extern.slf4j.Slf4j;
 @org.springframework.stereotype.Service
 public class SecurityUserDetails  {
 
-	@Value("${keycloack.resource}")
+	@Value("${keycloak.resource}")
 	private String clientId;
 
-	@Value("${keycloack.credentials.secret}")
+	@Value("${keycloak.credentials.secret}")
 	private String clientSecret;
 
-	@Value("${keycloack.user-login.grant-type}")
+	@Value("${keycloak.user-login.grant-type}")
 	private String grantType;
 
-	@Value("${keycloack.auth-server-url}")
-	private String keycloackServerUrl;
+	@Value("${keycloak.auth-server-url}")
+	private String keycloakServerUrl;
 
-	@Value("${keycloack.realm}")
+	@Value("${keycloak.realm}")
 	private String realm;
 	
 	@Value("${rest.user.sistema}")
@@ -76,7 +76,7 @@ public class SecurityUserDetails  {
 
 		try {
 
-			String url = String.format("%s/protocol/openid-connect/token/", keycloackServerUrl);
+			String url = String.format("%s/protocol/openid-connect/token/", keycloakServerUrl);
 
 			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, httpComponent.httpHeaders());
 
@@ -153,7 +153,7 @@ public class SecurityUserDetails  {
 
 		try {
 
-			ResponseEntity<String> response = httpComponent.restTemplate().postForEntity(keycloackServerUrl + "/protocol/openid-connect/token/", rquest, String.class);
+			ResponseEntity<String> response = httpComponent.restTemplate().postForEntity(keycloakServerUrl + "/protocol/openid-connect/token/", rquest, String.class);
 
 			RefreshTokenDTO responseObj = new Gson().fromJson(response.getBody(), RefreshTokenDTO.class);
 

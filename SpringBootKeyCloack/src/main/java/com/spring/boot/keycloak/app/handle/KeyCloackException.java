@@ -1,4 +1,4 @@
-package com.spring.boot.keycloack.app.handle;
+package com.spring.boot.keycloak.app.handle;
 
 import org.springframework.http.HttpStatus;
 
