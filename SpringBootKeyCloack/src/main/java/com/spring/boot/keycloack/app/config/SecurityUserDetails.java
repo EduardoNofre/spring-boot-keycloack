@@ -12,21 +12,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.core.userdetails.User;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.spring.boot.keycloack.app.dto.RefreshTokenDTO;
-import com.spring.boot.keycloack.app.dto.UsuarioDTO;
 import com.spring.boot.keycloack.app.utils.HttpParamsUtil;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityUserDetails  {
 
 	@Value("${keycloack.resource}")
-	private String clientId = "";
+	private String clientId;
 
 	@Value("${keycloack.credentials.secret}")
 	private String clientSecret;
@@ -50,11 +49,19 @@ public class SecurityUserDetails  {
 
 	@Value("${keycloack.realm}")
 	private String realm;
+	
+	@Value("${rest.user.sistema}")
+	private String usuario;
+
+	@Value("${rest.password.sistema}")
+	private String senha;
+		
+	private static final String ROLE_SISTEMA = "CLIENT_ROLE_SISTEMA";
 
 	@Autowired
 	private HttpComponent httpComponent;
 
-	public UserDetailsService  loginService(UsuarioDTO usuarioDTO)  throws AccessDeniedException{
+	public UserDetailsService loginService()  throws AccessDeniedException{
 
 		log.info("Login service inicio {}", LocalDateTime.now());		
 
@@ -64,8 +71,8 @@ public class SecurityUserDetails  {
 				.HttpParamsClientId(clientId)
 				.HttpParamsClientSecret(clientSecret)
 				.HttpParamsGrantType(grantType)
-				.HttpParamsUsername(usuarioDTO.getUsuario())
-				.HttpParamsPassword(usuarioDTO.getSenha()).build();
+				.HttpParamsUsername(usuario)
+				.HttpParamsPassword(senha).build();
 
 		try {
 
@@ -79,7 +86,7 @@ public class SecurityUserDetails  {
 				throw new AccessDeniedException(
 						"Autênticação falhou - verificar as configurações do sistema de segurança");
 			} else {
-				log.info("Autenticando: {} para o recurso: {}",usuarioDTO.getUsuario(),clientId);
+				log.info("Autenticando: {} para o recurso: {}",usuario,clientId);
 
 				Map<String, Object> body = response.getBody();
 				String token = (String) body.get("access_token");
@@ -89,7 +96,7 @@ public class SecurityUserDetails  {
 
 				//valida username
 				String userName = decodedJWT.getClaim("preferred_username").asString();
-				if (!userName.equals(usuarioDTO.getUsuario())) {
+				if (!userName.equals(usuario)) {
 					throw new AccessDeniedException("Usuário inválido");
 				}
 
@@ -106,8 +113,8 @@ public class SecurityUserDetails  {
 				List<String> roles = (List<String>) acessos.get("roles");
 				String autorizacao = null;
 				for (String role : roles) {
-					if (role.equalsIgnoreCase("CLIENT_ROLE_ADMIN")) {
-						autorizacao = "CLIENT_ROLE_ADMIN";
+					if (role.equalsIgnoreCase(ROLE_SISTEMA)) {
+						autorizacao = ROLE_SISTEMA;
 						break;
 					}
 				}
@@ -116,8 +123,8 @@ public class SecurityUserDetails  {
 				}
 
 				
-				UserDetailsService user = new InMemoryUserDetailsManager(User.withUsername(usuarioDTO.getUsuario())
-						.password(passwordEncoder().encode(usuarioDTO.getSenha()))
+				UserDetailsService user = new InMemoryUserDetailsManager(User.withUsername(usuario)
+						.password(passwordEncoder().encode(senha))
 						.roles(autorizacao).build());
 				
 				

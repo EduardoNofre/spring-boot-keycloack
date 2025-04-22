@@ -43,7 +43,7 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<UserDetailsService> loginSpringBoot(@Valid @RequestBody UsuarioDTO usuarioDTO) throws AccessDeniedException{
 
-		return ResponseEntity.status(HttpStatus.OK).body(securityUserDetails.loginService(usuarioDTO));
+		return ResponseEntity.status(HttpStatus.OK).body(securityUserDetails.loginService());
 
 	}
 	
