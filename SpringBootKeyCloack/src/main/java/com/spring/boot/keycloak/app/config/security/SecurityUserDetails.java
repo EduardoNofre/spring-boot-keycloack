@@ -1,4 +1,4 @@
-package com.spring.boot.keycloak.app.config;
+package com.spring.boot.keycloak.app.config.security;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
+import com.spring.boot.keycloak.app.config.HttpComponent;
 import com.spring.boot.keycloak.app.dto.RefreshTokenDTO;
 import com.spring.boot.keycloak.app.utils.HttpParamsUtil;
 

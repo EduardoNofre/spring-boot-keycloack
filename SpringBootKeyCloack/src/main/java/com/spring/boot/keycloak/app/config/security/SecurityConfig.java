@@ -1,4 +1,4 @@
-package com.spring.boot.keycloak.app.config;
+package com.spring.boot.keycloak.app.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

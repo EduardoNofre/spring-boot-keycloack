@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.boot.keycloak.app.config.SecurityUserDetails;
+import com.spring.boot.keycloak.app.config.security.SecurityUserDetails;
 import com.spring.boot.keycloak.app.dto.RefreshTokenDTO;
 import com.spring.boot.keycloak.app.dto.UsuarioDTO;
 

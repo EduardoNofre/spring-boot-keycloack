@@ -1,4 +1,4 @@
-package com.spring.boot.keycloak.app.config;
+package com.spring.boot.keycloak.app.config.security;
 
 import java.io.IOException;
 
