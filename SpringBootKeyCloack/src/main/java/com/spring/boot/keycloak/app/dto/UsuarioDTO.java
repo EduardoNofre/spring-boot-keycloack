@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class UsuarioDTO {
 
-	@Schema(name = "usuario", description = "Nome do usuario", example = "eduardo_adm", type = "String")
+	@Schema(name = "usuario", description = "Nome do usuario", example = "eduardo_admin", type = "String")
 	@NotBlank(message = "O campo não pode estar vazio")
 	private String usuario;
 

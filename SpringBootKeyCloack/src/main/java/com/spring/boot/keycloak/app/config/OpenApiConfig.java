@@ -29,8 +29,10 @@ public class OpenApiConfig {
 
     @Value("${server.servlet.context-path}")
     private String path;
-
-    static final String SECURITY_SCHEME_NAME = "Basic";
+    
+    
+    @Value("${rest.security.schema.name}")
+    private String security_scheme_name;
 
 
     /**
@@ -46,12 +48,12 @@ public class OpenApiConfig {
         log.info("[OpenApiConfig - iniciado]");
         return new OpenAPI()
                 .addServersItem(new Server().url(path))
-                .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
+                .addSecurityItem(new SecurityRequirement().addList(security_scheme_name))
                 .components(
                         new Components()
-                                .addSecuritySchemes(SECURITY_SCHEME_NAME,
+                                .addSecuritySchemes(security_scheme_name,
                                         new SecurityScheme()
-                                                .name(SECURITY_SCHEME_NAME)
+                                                .name(security_scheme_name)
                                                 .type(SecurityScheme.Type.HTTP)
                                                 .scheme("basic")
                                 )

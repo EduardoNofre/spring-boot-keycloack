@@ -56,7 +56,8 @@ public class SecurityUserDetails  {
 	@Value("${rest.password.sistema}")
 	private String senha;
 		
-	private static final String ROLE_SISTEMA = "CLIENT_ROLE_SISTEMA";
+	@Value("${keycloak.recurso.role}")
+	private String role_sistema;
 
 	@Autowired
 	private HttpComponent httpComponent;
@@ -113,8 +114,8 @@ public class SecurityUserDetails  {
 				List<String> roles = (List<String>) acessos.get("roles");
 				String autorizacao = null;
 				for (String role : roles) {
-					if (role.equalsIgnoreCase(ROLE_SISTEMA)) {
-						autorizacao = ROLE_SISTEMA;
+					if (role.equalsIgnoreCase(role_sistema)) {
+						autorizacao = role_sistema;
 						break;
 					}
 				}

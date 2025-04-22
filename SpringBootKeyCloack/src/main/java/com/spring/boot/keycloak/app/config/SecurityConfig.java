@@ -24,6 +24,9 @@ public class SecurityConfig {
 	@Value("${keycloak.auth-server-url}")
 	private String urlKeycloak;
 	
+	@Value("${keycloak.recurso.role}")
+	private String role_sistema;
+	
 	@Autowired
 	private SecurityEntryPoint entryPoint;
 	
@@ -33,8 +36,6 @@ public class SecurityConfig {
 	@Autowired
 	private SecurityUserDetails userDetails;
 	
-	private static final String ROLE_SISTEMA = "CLIENT_ROLE_SISTEMA";
-
 	
 	
 	@Bean
@@ -55,7 +56,7 @@ public class SecurityConfig {
             .userDetailsService(userDetails.loginService())
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers(getUrlIgnoradas()).permitAll()// URLs permitidas sem autenticacao
-                    .anyRequest().hasRole(ROLE_SISTEMA) // Outras URLs exigem autenticacao
+                    .anyRequest().hasRole(role_sistema) // Outras URLs exigem autenticacao
             )
             .httpBasic(Customizer.withDefaults());
 
