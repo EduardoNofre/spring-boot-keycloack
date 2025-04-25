@@ -15,4 +15,9 @@ public class UsuarioDTO {
 	@Schema(name = "senha", description = "senha do usuario", example = "*Edu*147258", type = "Long")
 	@Size(min = 6, max = 20, message = "A senha dever no minimo 6 e no maximo 20 carateres ")
 	private String senha;
+	
+	
+	@Schema(name = "teste", description = "teste", example = "*Edu*147258", type = "Long")
+	@Size(min = 6, max = 20, message = "teste")
+	private String teste;
 }

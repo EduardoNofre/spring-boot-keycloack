@@ -1,10 +1,10 @@
-package com.spring.boot.keycloack.app;
+package com.spring.boot.keycloak.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringBootKeyCloackApplicationTests {
+class SpringBootKeyCloakApplicationTests {
 
 	@Test
 	void contextLoads() {

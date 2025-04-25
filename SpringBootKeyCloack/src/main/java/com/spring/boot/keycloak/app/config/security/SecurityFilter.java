@@ -2,27 +2,29 @@ package com.spring.boot.keycloak.app.config.security;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
+import com.spring.boot.keycloak.app.handle.ErrorResponse;
+
+import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
-
-import com.spring.boot.keycloak.app.handle.ErrorResponse;
-
-import org.springframework.http.HttpHeaders;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Filtro utilizado para exigir o cabecalho usuarioAcao em todas as requisicoes
  * da api
  *
  */
-public class SecurityFilter {
+@Component
+public class SecurityFilter implements Filter  {
 
 	@Value("${server.servlet.context-path}")
 	private String contexPath;

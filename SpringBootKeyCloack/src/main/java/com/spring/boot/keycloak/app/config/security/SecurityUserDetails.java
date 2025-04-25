@@ -54,7 +54,7 @@ public class SecurityUserDetails  {
 	@Value("${rest.user.sistema}")
 	private String usuario;
 
-	@Value("${rest.password.sistema}")
+	@Value("${rest.user.password.sistema}")
 	private String senha;
 		
 	@Value("${keycloak.recurso.role}")
