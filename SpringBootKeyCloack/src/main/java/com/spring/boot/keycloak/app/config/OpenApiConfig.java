@@ -67,6 +67,12 @@ public class OpenApiConfig {
                 );
     }
 
+    private SecurityScheme createBearerScheme() {
+        return new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme(security_scheme_name);
+    }
+    
 
     /**
      * License creation
